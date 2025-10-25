@@ -91,7 +91,7 @@
                                 <label class="form-label fw-semibold">Gambar Produk</label>
                                 @if($produk->gambar)
                                 <div class="text-center mb-3">
-                                    <img src="{{ asset('storage/products/' . $produk->gambar) }}" 
+                                    <img src="{{ asset('storage/' . $produk->gambar) }}" 
                                          alt="{{ $produk->nama_produk }}" 
                                          class="rounded shadow-sm" 
                                          style="max-width: 220px; height: auto; object-fit: cover;">

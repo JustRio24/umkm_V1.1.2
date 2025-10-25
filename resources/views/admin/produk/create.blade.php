@@ -88,9 +88,16 @@
                             <div class="col-12">
                                 <label class="form-label fw-semibold">Gambar Produk</label>
                                 <input type="file" 
-                                       class="form-control @error('gambar') is-invalid @enderror" 
-                                       name="gambar" accept="image/*">
+                                class="form-control @error('gambar') is-invalid @enderror" 
+                                name="gambar" accept="image/*" onchange="previewImage(event)">
                                 <small class="text-muted">Pilih gambar yang menarik agar produk lebih menonjol.</small>
+
+                                <!-- Preview Image -->
+                                <div class="mt-3 text-center">
+                                    <img id="preview-gambar" src="#" 
+                                        style="max-width: 200px; display: none; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,.1);" />
+                                </div>
+
                                 @error('gambar') <span class="invalid-feedback">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -111,3 +118,12 @@
     </div>
 </div>
 @endsection
+
+<script>
+    function previewImage(event) {
+        const image = document.getElementById('preview-gambar');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.style.display = 'block';
+    }
+</script>
+    
