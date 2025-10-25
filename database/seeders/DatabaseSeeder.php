@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             LevelPedasSeeder::class,
             ProdukSeeder::class,
             TestimonialSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
