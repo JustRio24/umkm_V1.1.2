@@ -1,61 +1,253 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mie Mercon Jawara - E-Commerce UMKM
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi e-commerce modern untuk UMKM "Mie Mercon Jawara" dengan fitur lengkap untuk manajemen produk, pesanan, dan pengalaman berbelanja yang interaktif.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Untuk Pelanggan
+- **Beranda Menarik**: Hero banner dengan CTA dan testimonial pelanggan
+- **Katalog Produk**: Listing produk dengan pagination (5 per halaman)
+- **Pencarian & Filter**: Cari produk berdasarkan nama atau kategori
+- **Detail Produk**: Pilih level pedas, tambahkan topping, atur jumlah dengan kalkulasi harga real-time
+- **Keranjang Belanja**: Slide-in drawer dengan review item dan subtotal
+- **Checkout**: Form pemesanan dengan data pelanggan dan metode pembayaran
+- **Tentang & Kontak**: Informasi bisnis, lokasi, dan social media links
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Untuk Admin
+- **Dashboard**: Ringkasan statistik (total produk, kategori, pesanan, pending orders)
+- **Manajemen Produk**: CRUD lengkap dengan upload gambar
+- **Manajemen Pesanan**: Lihat semua pesanan dengan status dan kontak pelanggan
+- **Autentikasi**: Login admin dengan middleware protection
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Teknologi
 
-## Learning Laravel
+- **Framework**: Laravel 10+
+- **Database**: MySQL/MariaDB
+- **Frontend**: Bootstrap 5, Vanilla JavaScript
+- **Styling**: Custom CSS dengan Tailwind utilities
+- **Storage**: Local file storage untuk gambar produk
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Instalasi & Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Prasyarat
+- PHP 8.1+
+- Composer
+- MySQL/MariaDB
+- Node.js & npm (opsional, untuk asset compilation)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Langkah Instalasi
 
-## Laravel Sponsors
+1. **Clone Repository**
+   \`\`\`bash
+   git clone <repository-url>
+   cd mie-mercon-jawara
+   \`\`\`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. **Install Dependencies**
+   \`\`\`bash
+   composer install
+   \`\`\`
 
-### Premium Partners
+3. **Setup Environment**
+   \`\`\`bash
+   cp .env.example .env
+   \`\`\`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. **Generate Application Key**
+   \`\`\`bash
+   php artisan key:generate
+   \`\`\`
 
-## Contributing
+5. **Konfigurasi Database**
+   Edit file `.env`:
+   \`\`\`
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=db_umkm
+   DB_USERNAME=root
+   DB_PASSWORD=
+   \`\`\`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. **Jalankan Migrations & Seeders**
+   \`\`\`bash
+   php artisan migrate --seed
+   \`\`\`
 
-## Code of Conduct
+7. **Setup Storage Link**
+   \`\`\`bash
+   php artisan storage:link
+   \`\`\`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+8. **Jalankan Development Server**
+   \`\`\`bash
+   php artisan serve
+   \`\`\`
 
-## Security Vulnerabilities
+   Aplikasi akan berjalan di `http://localhost:8000`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Akun Default
+
+Untuk login admin, gunakan akun yang dibuat melalui Laravel Breeze:
+\`\`\`bash
+php artisan tinker
+User::create(['name' => 'Admin', 'email' => 'admin@example.com', 'password' => bcrypt('password')])
+\`\`\`
+
+Atau gunakan command:
+\`\`\`bash
+php artisan make:user
+\`\`\`
+
+## Struktur Database
+
+### Tabel Kategori
+- `id_kategori` (INT, PK)
+- `nama_kategori` (VARCHAR 50)
+- `timestamps`
+
+### Tabel Produk
+- `id_produk` (INT, PK)
+- `nama_produk` (VARCHAR 100)
+- `porsi` (VARCHAR 30)
+- `harga` (INT)
+- `id_kategori` (FK)
+- `deskripsi` (TEXT)
+- `gambar` (VARCHAR 255)
+- `timestamps`
+
+### Tabel Level Pedas
+- `id_level` (INT, PK)
+- `nama_level` (VARCHAR 50)
+- `tambahan_harga` (INT)
+- `timestamps`
+
+### Tabel Orders
+- `id` (INT, PK)
+- `nama_pelanggan` (VARCHAR)
+- `alamat` (TEXT)
+- `kontak` (VARCHAR)
+- `metode_pembayaran` (VARCHAR)
+- `total_harga` (INT)
+- `status` (VARCHAR)
+- `timestamps`
+
+### Tabel Order Items
+- `id` (INT, PK)
+- `order_id` (FK)
+- `id_produk` (FK)
+- `kuantitas` (INT)
+- `harga_satuan` (INT)
+- `level_pedas` (INT)
+- `toppings` (JSON)
+- `timestamps`
+
+### Tabel Testimonials
+- `id` (INT, PK)
+- `nama` (VARCHAR)
+- `pesan` (TEXT)
+- `rating` (INT)
+- `timestamps`
+
+## Konfigurasi Penting
+
+### Upload Gambar Produk
+1. Pastikan folder `storage/app/public/products/` sudah ada
+2. Gambar akan disimpan otomatis saat upload di admin panel
+3. Untuk menggunakan gambar seeded, letakkan file di folder tersebut dengan nama sesuai seeder
+
+### Email Configuration (Opsional)
+Edit `.env` untuk setup email notifications:
+\`\`\`
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_FROM_ADDRESS=noreply@miemercon.com
+\`\`\`
+
+### Google Maps (Opsional)
+Untuk embed Google Maps di halaman Tentang, update URL di `resources/views/tentang.blade.php` dengan koordinat lokasi Talang Kelapa.
+
+## Fitur Interaktif
+
+- **Animated Cards**: Hover effect dengan elevation dan shadow
+- **Toast Notifications**: Feedback visual untuk aksi (add to cart, delete, etc)
+- **Cart Drawer**: Slide-in animation dengan overlay
+- **Price Calculator**: Real-time price update saat memilih level pedas dan topping
+- **Smooth Scroll**: Internal navigation dengan smooth scrolling
+- **Responsive Design**: Mobile-first approach dengan breakpoints untuk tablet dan desktop
+
+## Deployment
+
+### Ke Vercel
+1. Push ke GitHub
+2. Connect repository ke Vercel
+3. Set environment variables di Vercel dashboard
+4. Deploy
+
+### Ke Server Tradisional
+1. Upload files ke server
+2. Setup database dan run migrations
+3. Configure web server (Apache/Nginx)
+4. Set proper permissions untuk `storage/` dan `bootstrap/cache/`
+5. Setup SSL certificate
+
+## Troubleshooting
+
+### Gambar tidak muncul
+- Pastikan `php artisan storage:link` sudah dijalankan
+- Check permissions folder `storage/app/public/`
+- Verify path di database sesuai dengan file yang ada
+
+### Database error
+- Pastikan MySQL service berjalan
+- Check credentials di `.env`
+- Run `php artisan migrate --fresh --seed` untuk reset database
+
+### Cart tidak menyimpan
+- Check browser localStorage support
+- Clear browser cache dan cookies
+- Verify JavaScript tidak ada error di console
+
+## Maintenance
+
+### Backup Database
+\`\`\`bash
+mysqldump -u root -p db_umkm > backup.sql
+\`\`\`
+
+### Clear Cache
+\`\`\`bash
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+\`\`\`
+
+### Update Dependencies
+\`\`\`bash
+composer update
+\`\`\`
+
+## Support & Contact
+
+Untuk pertanyaan atau support:
+- WhatsApp: 0812-7449-0948
+- Instagram: @mie_mercon_jawara
+- Email: admin@miemercon.com
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proprietary - Mie Mercon Jawara UMKM
+
+## Changelog
+
+### v1.1.2 (Initial Release)
+- Complete e-commerce functionality
+- Admin dashboard dan product management
+- Shopping cart dengan checkout
+- Order management system
+- Responsive design dengan Bootstrap 5
+- Search dan filter functionality
+- Testimonials section

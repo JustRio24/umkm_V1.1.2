@@ -52,7 +52,7 @@ class ProdukController extends Controller
             'nama_produk' => 'required|string|max:255',
             'porsi' => 'required|string|max:50',
             'harga' => 'required|numeric',
-            'kategori_id' => 'required|exists:kategoris,id_kategori',
+            'id_kategori' => 'required|exists:kategori,id_kategori',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'deskripsi' => 'nullable|string',
         ]);
