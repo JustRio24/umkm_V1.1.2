@@ -25,6 +25,11 @@ Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout');
 
+Route::get('/logo_mie_jawara.jpeg', function () {
+    return response()->file(public_path('logo_mie_jawara.jpeg'));
+});
+
+
 // Public product routes
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
