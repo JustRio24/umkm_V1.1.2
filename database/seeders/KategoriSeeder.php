@@ -2,21 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kategori;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class KategoriSeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = [
-            ['nama_kategori' => 'Makanan'],
-            ['nama_kategori' => 'Minuman'],
-            ['nama_kategori' => 'Topping'],
-        ];
-
-        foreach ($categories as $category) {
-            Kategori::create($category);
-        }
+        DB::table('kategori')->insert([
+            ['id_kategori' => 1, 'nama_kategori' => 'Makanan'],
+            ['id_kategori' => 2, 'nama_kategori' => 'Minuman'],
+            ['id_kategori' => 3, 'nama_kategori' => 'Topping'],
+        ]);
     }
 }
