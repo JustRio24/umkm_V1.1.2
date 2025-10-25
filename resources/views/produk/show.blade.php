@@ -69,9 +69,9 @@
                     <!-- Jumlah -->
                     <div class="mb-4">
                         <label class="form-label fw-semibold text-dark">Jumlah</label>
-                        <div class="input-group" style="width: 150px;">
+                        <div class="input-group" style="width: 185px;">
                             <button class="btn btn-outline-secondary" type="button" onclick="decreaseQty()">−</button>
-                            <input type="number" class="form-control text-center" id="quantity" value="1" min="1">
+                            <input type="number" class="form-control text-end" id="quantity" value="1" min="1">
                             <button class="btn btn-outline-secondary" type="button" onclick="increaseQty()">+</button>
                         </div>
                     </div>
