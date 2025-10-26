@@ -12,7 +12,7 @@
             <i class="fas fa-shopping-bag"></i> Pesan Sekarang
         </a>
     </div>
-    <div class="col-md-6 text-center">
+    <div class="col-md-6 text-center d-none d-md-block">
         <i class="fas fa-fire" style="font-size: 120px; opacity: 0.3;"></i>
     </div>
 </div>
