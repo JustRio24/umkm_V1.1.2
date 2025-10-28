@@ -22,7 +22,7 @@ class ProdukController extends Controller
             $query->where('id_kategori', request('kategori'));
         }
 
-        $produk = $query->paginate(6);
+        $produk = $query->paginate(5);
         $kategori = Kategori::all();
         
         return view('produk.index', compact('produk', 'kategori'));

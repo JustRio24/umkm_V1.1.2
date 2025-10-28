@@ -29,36 +29,36 @@
     </div>
 
     <!-- Products Grid -->
-    <div class="row">
-        @forelse($produk as $item)
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card h-100">
-                <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : '/placeholder.svg?height=200&width=300' }}" 
-                     class="card-img-top" alt="{{ $item->nama_produk }}">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ $item->nama_produk }}</h5>
-                    <p class="card-text text-muted">{{ $item->porsi }}</p>
-                    <p class="card-text">{{ Str::limit($item->deskripsi, 80) }}</p>
-                    <div class="mb-3">
-                        <span class="badge">{{ $item->kategori->nama_kategori }}</span>
-                    </div>
-                    <div class="mt-auto">
-                        <p class="h5" style="color: var(--mercon-500);">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
-                        <a href="{{ route('produk.show', $item->id_produk) }}" class="btn btn-primary w-100">Lihat Detail</a>
+    @if($produk->count())
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            @foreach($produk as $index => $item)
+                <div class="card" style="width: 22.1rem;">
+                    <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : '/placeholder.svg?height=200&width=300' }}" 
+                         class="card-img-top" alt="{{ $item->nama_produk }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ $item->nama_produk }}</h5>
+                        <p class="card-text text-muted">{{ $item->porsi }}</p>
+                        <p class="card-text">{{ Str::limit($item->deskripsi, 80) }}</p>
+                        <div class="mb-3">
+                            <span class="badge bg-secondary">{{ $item->kategori->nama_kategori }}</span>
+                        </div>
+                        <div class="mt-auto">
+                            <p class="h5" style="color: var(--mercon-500);">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
+                            <a href="{{ route('produk.show', $item->id_produk) }}" class="btn btn-primary w-100">Lihat Detail</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-        @empty
-        <div class="col-12">
-            <div class="alert alert-info text-center">
-                <p class="mb-0">Tidak ada produk yang sesuai dengan pencarian Anda</p>
-            </div>
+    @else
+        <div class="alert alert-info text-center">
+            <p class="mb-0">Tidak ada produk yang sesuai dengan pencarian Anda</p>
         </div>
-        @endforelse
-    </div>
+    @endif
 
     <!-- Pagination -->
-    {{ $produk->links('pagination::bootstrap-5') }}
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $produk->links('pagination::bootstrap-5') }}
+    </div>
 </div>
 @endsection

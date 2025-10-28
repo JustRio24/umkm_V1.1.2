@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('kontak');
             $table->string('metode_pembayaran');
+            $table->integer('ongkir')->default(0);
             $table->integer('total_harga');
             $table->string('status')->default('pending');
             $table->timestamps();

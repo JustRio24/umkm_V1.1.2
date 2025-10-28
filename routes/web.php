@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KontakController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\Admin\ProdukController as AdminProdukController;
 
 
@@ -21,18 +23,25 @@ Route::get('/kontak', function () {
 
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
 
-Route::get('/checkout', function () {
-    return view('checkout');
-})->name('checkout');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout/process', [OrderController::class, 'processCheckout'])->name('checkout.process');
+
+Route::get('/track-order', [TrackingController::class, 'index'])->name('tracking.index');
+Route::post('/track-order', [TrackingController::class, 'track'])->name('tracking.search');
 
 Route::get('/logo_mie_jawara.jpeg', function () {
     return response()->file(public_path('logo_mie_jawara.jpeg'));
 });
 
+Route::get('/invoice/{orderId}/download', [OrderController::class, 'downloadInvoice'])->name('invoice.download');
+Route::get('/invoice/{orderId}', [OrderController::class, 'viewInvoice'])->name('invoice.view');
 
 // Public product routes
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
+
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+
 
 // Admin routes
 Route::middleware('auth')->group(function () {
@@ -47,8 +56,11 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'admin.produk.destroy',
     ]);
     
-    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
-    Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+    Route::put('admin/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::put('admin/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('admin/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+
 });
 
 require __DIR__.'/auth.php';

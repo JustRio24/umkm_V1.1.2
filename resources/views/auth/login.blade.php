@@ -33,12 +33,6 @@
 
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
-
-                    @if (Route::has('password.request'))
-                        <div class="text-center mt-3">
-                            <a href="{{ route('password.request') }}" class="text-decoration-none">Lupa password?</a>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

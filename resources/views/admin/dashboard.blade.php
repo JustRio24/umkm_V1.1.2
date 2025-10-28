@@ -3,7 +3,7 @@
 @section('title', 'Admin Dashboard - Mie Mercon Jawara')
 
 @section('content')
-<div class="container-fluid py-4">
+<div class="container py-4">
     <h1 class="mb-4" style="color: var(--mercon-500);">Admin Dashboard</h1>
 
     <!-- Stats Cards -->

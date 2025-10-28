@@ -33,6 +33,7 @@
                     </div>
 
                     <!-- Level Pedas -->
+                    @if($produk->id_kategori == 1) <!-- Hanya untuk kategori makanan -->
                     <div class="mb-4">
                         <label class="form-label fw-semibold text-dark">Pilih Level Pedas</label>
                         <select class="form-select rounded-3" id="levelPedas" onchange="updatePrice()">
@@ -65,6 +66,7 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
 
                     <!-- Jumlah -->
                     <div class="mb-4">

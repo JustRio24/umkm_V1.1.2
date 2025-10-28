@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Mie Mercon Jawara')</title>
     <link rel="icon" type="image/jpeg" href="{{ asset('logo_mie_jawara.jpeg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -80,6 +81,113 @@
             height: 200px;
             object-fit: cover;
         }
+
+        /* 🛒 CART DRAWER STYLING */
+        .cart-drawer {
+            position: fixed;
+            right: -420px;
+            top: 0;
+            width: 420px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: right 0.35s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--neutral-100);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .cart-item img {
+            width: 65px;
+            height: 65px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .cart-item-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .cart-item-price {
+            font-weight: 600;
+            color: var(--mercon-500);
+        }
+
+        .cart-item-remove {
+            color: #dc3545;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+            background-color: #fafafa;
+        }
+
+        /* Overlay */
+        .cart-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* When cart is active */
+        .cart-drawer.active {
+            right: 0;
+        }
+
+        .cart-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Mobile */
+        @media (max-width: 576px) {
+            .cart-drawer {
+                width: 100%;
+            }
+        }
+
 
         /* Buttons */
         .btn {
@@ -232,7 +340,7 @@
                         <a class="nav-link" href="{{ route('tentang') }}">Tentang</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('kontak') }}">Kontak</a>
+                        <a class="nav-link" href="{{ route('tracking.index') }}">Lacak Pesanan</a>
                     </li>
                     @auth
                         <li class="nav-item">
@@ -297,28 +405,36 @@
     </footer>
 
     <!-- Toast Container -->
-    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+    <div id="toastContainer" style="position: fixed; top: 20px; left: 20px; z-index: 9999;"></div>
 
-    <!-- Cart Drawer -->
-    <div id="cartDrawer" style="position: fixed; right: -400px; top: 0; width: 400px; height: 100vh; background: white; box-shadow: -2px 0 8px rgba(0,0,0,0.1); z-index: 1000; transition: right 0.3s ease; overflow-y: auto;">
-        <div style="padding: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h5 style="margin: 0;">Keranjang Belanja</h5>
-                <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+    <!-- 🛒 CART DRAWER -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-header">
+            <h5><i class="fas fa-shopping-cart"></i> Keranjang Belanja</h5>
+            <button class="btn-close" onclick="toggleCart()"></button>
+        </div>
+
+        <div id="cartItems" class="cart-items">
+            <p class="text-muted text-center mt-4">Keranjang masih kosong</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="d-flex justify-content-between mb-3">
+                <span class="fw-semibold">Subtotal</span>
+                <span id="cartSubtotal" class="fw-bold text-danger fs-5">Rp 0</span>
             </div>
-            <div id="cartItems" style="margin-bottom: 1.5rem; max-height: 400px; overflow-y: auto;"></div>
-            <hr>
-            <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0;"><strong>Subtotal:</strong> <span id="cartSubtotal">Rp 0</span></p>
-                <p style="margin: 0.5rem 0;"><strong>Total:</strong> <span id="cartTotal" style="color: var(--mercon-500); font-size: 1.2rem;">Rp 0</span></p>
-            </div>
-            <button class="btn btn-primary w-100" onclick="proceedToCheckout()">Lanjut ke Checkout</button>
-            <button class="btn btn-outline-secondary w-100 mt-2" onclick="toggleCart()">Lanjut Belanja</button>
+            <button class="btn btn-primary w-100 mb-2" onclick="proceedToCheckout()">
+                <i class="fas fa-cash-register"></i> Lanjut ke Checkout
+            </button>
+            <button class="btn btn-outline-secondary w-100" onclick="toggleCart()">
+                <i class="fas fa-arrow-left"></i> Lanjut Belanja
+            </button>
         </div>
     </div>
 
-    <!-- Cart Overlay -->
-    <div id="cartOverlay" onclick="toggleCart()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none;"></div>
+    <!-- Overlay -->
+    <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -340,46 +456,11 @@
         function toggleCart() {
             const drawer = document.getElementById('cartDrawer');
             const overlay = document.getElementById('cartOverlay');
-            if (drawer.style.right === '-400px') {
-                drawer.style.right = '0';
-                overlay.style.display = 'block';
-                updateCartDisplay();
-            } else {
-                drawer.style.right = '-400px';
-                overlay.style.display = 'none';
-            }
+            drawer.classList.toggle('active');
+            overlay.classList.toggle('active');
+            if (drawer.classList.contains('active')) updateCartDisplay();
         }
 
-        function updateCartDisplay() {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const cartItems = document.getElementById('cartItems');
-            const cartBadge = document.getElementById('cartBadge');
-            let total = 0;
-
-            cartItems.innerHTML = '';
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p class="text-muted">Keranjang kosong</p>';
-                cartBadge.style.display = 'none';
-            } else {
-                cart.forEach((item, index) => {
-                    total += item.subtotal;
-                    const itemHTML = `
-                        <div style="padding: 1rem; border-bottom: 1px solid #eee;">
-                            <p style="margin: 0.25rem 0; font-weight: 600;">${item.nama_produk} (${item.porsi})</p>
-                            <p style="margin: 0.25rem 0; font-size: 0.9rem; color: #666;">Qty: ${item.kuantitas}</p>
-                            <p style="margin: 0.25rem 0; font-size: 0.9rem; color: #666;">Rp ${item.subtotal.toLocaleString('id-ID')}</p>
-                            <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger mt-2">Hapus</button>
-                        </div>
-                    `;
-                    cartItems.insertAdjacentHTML('beforeend', itemHTML);
-                });
-                cartBadge.textContent = cart.length;
-                cartBadge.style.display = 'inline-block';
-            }
-
-            document.getElementById('cartSubtotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
-            document.getElementById('cartTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
-        }
 
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -398,15 +479,86 @@
             window.location.href = '{{ route("checkout") }}';
         }
 
+
+        function updateCartDisplay() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const cartItems = document.getElementById('cartItems');
+            const badge = document.getElementById('cartBadge');
+            let total = 0;
+
+            cartItems.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<p class="text-muted text-center mt-4">Keranjang masih kosong</p>`;
+                badge.style.display = 'none';
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.subtotal;
+
+                    // deteksi topping (bisa array atau string)
+                    let topping = item.topping || item.topping_pilihan || '';
+                    if (typeof topping === 'string' && topping.trim() !== '') {
+                        topping = topping.split(',').map(t => t.trim());
+                    }
+                    const toppingText = topping && topping.length > 0 
+                        ? `<div class="cart-item-topping text-muted small">
+                                <i class="fas fa-pepper-hot me-1 text-danger"></i>
+                                Topping: ${Array.isArray(topping) ? topping.join(', ') : topping}
+                        </div>`
+                        : '';
+
+                    // deteksi level pedas
+                    const levelPedas = item.level_pedas || item.level || '';
+                    const levelText = levelPedas
+                        ? `<div class="cart-item-level text-muted small">
+                                🌶️ Level Pedas: <strong>${levelPedas}</strong>
+                        </div>`
+                        : '';
+
+                        const html = `
+                            <div class="cart-item mb-3">
+                                <div class="cart-item-details">
+                                    <div class="cart-item-name fw-semibold">${item.nama_produk} (${item.porsi})</div>
+                                    ${
+                                        item.level_pedas
+                                            ? `<div class="cart-item-meta text-muted">🌶️ Level Pedas: ${item.level_pedas}</div>`
+                                            : ''
+                                    }
+                                    ${
+                                        item.toppings && item.toppings.length > 0
+                                            ? `<div class="cart-item-meta text-muted">🍗 Topping: ${item.toppings.map(t => t.nama).join(', ')}</div>`
+                                            : ''
+                                    }
+                                    <div class="cart-item-meta text-muted">Qty: ${item.kuantitas}</div>
+                                </div>
+                                <div class="cart-item-price fw-semibold text-danger">Rp ${item.subtotal.toLocaleString()}</div>
+                                <button class="btn btn-sm btn-outline-danger ms-3" onclick="removeFromCart(${index})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        `;
+                    cartItems.insertAdjacentHTML('beforeend', html);
+                });
+
+                badge.textContent = cart.length;
+                badge.style.display = 'inline-block';
+            }
+
+            document.getElementById('cartSubtotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
+            document.getElementById('cartTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
+        }
+
+
         // Update cart badge on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             if (cart.length > 0) {
-                document.getElementById('cartBadge').textContent = cart.length;
-                document.getElementById('cartBadge').style.display = 'inline-block';
+                const badge = document.getElementById('cartBadge');
+                badge.textContent = cart.length;
+                badge.style.display = 'inline-block';
             }
         });
-    </script>
+        </script>
     @yield('scripts')
 </body>
 </html>
